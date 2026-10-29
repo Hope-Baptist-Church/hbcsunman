@@ -5,7 +5,7 @@ import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Calendar',
-  description: `Upcoming events at ${site.name}.`,
+  description: `Events at ${site.name}`,
 }
 
 /** Google's embed, recoloured to the logo blue and trimmed of its chrome. */
@@ -28,36 +28,25 @@ export default function CalendarPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Calendar" title="What's Coming Up">
-        <p>Services, Bible studies, fellowship, and special events.</p>
-      </PageHeader>
+      <PageHeader eyebrow={site.name} title="Calendar" />
 
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        {id ? (
+      <section className="mx-auto min-h-48 max-w-6xl px-4 py-16 sm:px-6">
+        {id && (
           <div className="overflow-hidden rounded-3xl bg-white ring-1 ring-line">
             {/* Month grid is unreadable on a phone; the agenda list is not. */}
             <iframe title="Church calendar" src={calendarSrc(id, 'MONTH')} className="hidden h-[720px] w-full md:block" loading="lazy" />
             <iframe title="Church calendar" src={calendarSrc(id, 'AGENDA')} className="h-[600px] w-full md:hidden" loading="lazy" />
           </div>
-        ) : (
-          <div className="rounded-3xl border border-dashed border-sky/40 bg-sky-soft/50 p-10 text-center">
-            <p className="text-lg text-navy">Our full events calendar is coming soon.</p>
-            <p className="mt-2 text-muted">
-              In the meantime, follow{' '}
-              <a href={site.facebook} target="_blank" rel="noopener noreferrer" className="text-sky underline">
-                our Facebook page
-              </a>{' '}
-              for announcements.
-            </p>
-          </div>
         )}
 
-        <div className="mt-16 rounded-3xl bg-cream p-8 sm:p-10">
-          <h2 className="text-2xl font-semibold text-navy">Every week</h2>
-          <div className="mt-6">
-            <ServiceTimes />
+        {site.services.length > 0 && (
+          <div className="mt-16 rounded-3xl bg-cream p-8 sm:p-10">
+            <h2 className="text-2xl font-semibold text-navy">Service Times</h2>
+            <div className="mt-6">
+              <ServiceTimes />
+            </div>
           </div>
-        </div>
+        )}
       </section>
     </>
   )

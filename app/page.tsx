@@ -2,9 +2,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ServiceTimes } from '@/components/service-times'
 import { heroImage } from '@/lib/hero'
-import { fullAddress, mapsQuery, site } from '@/lib/site'
+import { fullAddress, phoneHref, site } from '@/lib/site'
 
 export default function Home() {
+  const hasTimes = site.services.length > 0
+
   return (
     <>
       {/* Hero */}
@@ -33,37 +35,28 @@ export default function Home() {
             <Link href="/visit" className="rounded-full bg-white px-7 py-3 font-medium text-navy shadow-lg transition hover:bg-sky hover:text-white">
               Plan a Visit
             </Link>
-            <a href="#times" className="rounded-full border border-white/40 px-7 py-3 font-medium text-white transition hover:bg-white/10">
-              Service Times
-            </a>
+            {hasTimes && (
+              <a href="#times" className="rounded-full border border-white/40 px-7 py-3 font-medium text-white transition hover:bg-white/10">
+                Service Times
+              </a>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Welcome */}
-      <section className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky">Welcome</p>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy sm:text-4xl">
-          A church family where you belong
-        </h2>
-        <p className="mt-5 text-lg leading-relaxed text-muted">
-          Whether you&apos;ve been walking with Christ for decades or you&apos;re just curious, there&apos;s a seat
-          for you at Hope. Come as you are — we&apos;d love to worship with you, open the Bible together, and get to
-          know you.
-        </p>
-      </section>
+      {/* Welcome — TODO: the church's own words go here. */}
 
-      {/* Service times */}
+      {/* Find us */}
       <section id="times" className="scroll-mt-16 bg-cream">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_1.4fr] lg:items-center">
+        <div className={`mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 ${hasTimes ? 'lg:grid-cols-[1fr_1.4fr] lg:items-center' : ''}`}>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky">Join us</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy sm:text-4xl">Service Times</h2>
+            <h2 className="text-3xl font-semibold tracking-tight text-navy sm:text-4xl">{hasTimes ? 'Service Times' : 'Find Us'}</h2>
+            <p className="mt-2 text-lg text-muted">{site.pastor}</p>
             <a
-              href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+              href={site.googleMaps}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex items-start gap-2 text-lg text-ink hover:text-sky"
+              className="mt-6 flex items-start gap-2 text-lg text-ink hover:text-sky"
             >
               <svg viewBox="0 0 24 24" className="mt-1 size-5 shrink-0 text-sky" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z" />
@@ -71,10 +64,18 @@ export default function Home() {
               </svg>
               {fullAddress}
             </a>
+            <a href={phoneHref} className="mt-3 flex items-center gap-2 text-lg text-ink hover:text-sky">
+              <svg viewBox="0 0 24 24" className="size-5 shrink-0 text-sky" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
+              </svg>
+              {site.phone}
+            </a>
           </div>
-          <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-line">
-            <ServiceTimes />
-          </div>
+          {hasTimes && (
+            <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-line">
+              <ServiceTimes />
+            </div>
+          )}
         </div>
       </section>
 
@@ -82,47 +83,20 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            {
-              href: '/beliefs',
-              title: 'What We Believe',
-              body: 'The Bible is our foundation. Read our statement of faith.',
-            },
-            {
-              href: '/calendar',
-              title: 'Calendar',
-              body: 'Bible studies, fellowship dinners, and everything coming up.',
-            },
-            {
-              href: '/give',
-              title: 'Give',
-              body: 'Support the ministry of Hope Baptist securely online.',
-            },
+            { href: '/beliefs', title: 'What We Believe' },
+            { href: '/calendar', title: 'Calendar' },
+            { href: '/give', title: 'Give' },
           ].map((card) => (
             <Link
               key={card.href}
               href={card.href}
-              className="group relative overflow-hidden rounded-3xl border border-line bg-white p-8 transition hover:-translate-y-1 hover:border-sky/40 hover:shadow-xl"
+              className="group relative flex items-center justify-between overflow-hidden rounded-3xl border border-line bg-white p-8 transition hover:-translate-y-1 hover:border-sky/40 hover:shadow-xl"
             >
               <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-navy to-sky opacity-0 transition group-hover:opacity-100" />
               <h3 className="text-xl font-semibold text-navy">{card.title}</h3>
-              <p className="mt-2 text-muted">{card.body}</p>
-              <span className="mt-6 inline-flex items-center gap-1 font-medium text-sky">
-                Learn more
-                <span className="transition group-hover:translate-x-1">→</span>
-              </span>
+              <span className="text-xl text-sky transition group-hover:translate-x-1">→</span>
             </Link>
           ))}
-        </div>
-      </section>
-
-      {/* Verse */}
-      <section className="bg-navy text-white">
-        <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
-          <blockquote className="font-serif text-2xl leading-relaxed italic sm:text-3xl">
-            &ldquo;Now the God of hope fill you with all joy and peace in believing, that ye may abound in hope,
-            through the power of the Holy Ghost.&rdquo;
-          </blockquote>
-          <p className="mt-6 text-sm uppercase tracking-[0.3em] text-sky">Romans 15:13</p>
         </div>
       </section>
     </>
