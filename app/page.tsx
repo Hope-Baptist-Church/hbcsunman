@@ -1,69 +1,130 @@
-import Image from "next/image";
+import Image from 'next/image'
+import Link from 'next/link'
+import { ServiceTimes } from '@/components/service-times'
+import { heroImage } from '@/lib/hero'
+import { fullAddress, mapsQuery, site } from '@/lib/site'
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      {/* Hero */}
+      <section className="relative isolate overflow-hidden bg-navy">
+        {heroImage ? (
+          <>
+            <Image src={heroImage} alt="" fill priority sizes="100vw" className="-z-20 object-cover" />
+            <div className="absolute inset-0 -z-10 bg-gradient-to-b from-navy-deep/70 via-navy/55 to-navy-deep/85" />
+          </>
+        ) : (
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_#0083cb55,_transparent_60%),linear-gradient(180deg,#0e125b,#080a38)]" />
+        )}
+
+        <div className="mx-auto flex min-h-[78svh] max-w-6xl flex-col items-center justify-center px-4 py-24 text-center sm:px-6">
+          <Image
+            src="/brand/wordmark-white.png"
+            alt={site.name}
+            width={632}
+            height={317}
+            priority
+            className="w-64 drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)] sm:w-96"
+          />
+          <p className="mt-8 font-serif text-2xl italic text-white/90 sm:text-3xl">{site.tagline}</p>
+          <p className="mt-3 text-sm uppercase tracking-[0.35em] text-white/60">{site.town}</p>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <Link href="/visit" className="rounded-full bg-white px-7 py-3 font-medium text-navy shadow-lg transition hover:bg-sky hover:text-white">
+              Plan a Visit
+            </Link>
+            <a href="#times" className="rounded-full border border-white/40 px-7 py-3 font-medium text-white transition hover:bg-white/10">
+              Service Times
+            </a>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Welcome */}
+      <section className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky">Welcome</p>
+        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy sm:text-4xl">
+          A church family where you belong
+        </h2>
+        <p className="mt-5 text-lg leading-relaxed text-muted">
+          Whether you&apos;ve been walking with Christ for decades or you&apos;re just curious, there&apos;s a seat
+          for you at Hope. Come as you are — we&apos;d love to worship with you, open the Bible together, and get to
+          know you.
+        </p>
+      </section>
+
+      {/* Service times */}
+      <section id="times" className="scroll-mt-16 bg-cream">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_1.4fr] lg:items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky">Join us</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy sm:text-4xl">Service Times</h2>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-start gap-2 text-lg text-ink hover:text-sky"
+            >
+              <svg viewBox="0 0 24 24" className="mt-1 size-5 shrink-0 text-sky" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z" />
+                <circle cx="12" cy="9.5" r="2.5" />
+              </svg>
+              {fullAddress}
+            </a>
+          </div>
+          <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-line">
+            <ServiceTimes />
+          </div>
         </div>
-      </main>
-    </div>
-  );
+      </section>
+
+      {/* Cards */}
+      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <div className="grid gap-6 md:grid-cols-3">
+          {[
+            {
+              href: '/beliefs',
+              title: 'What We Believe',
+              body: 'The Bible is our foundation. Read our statement of faith.',
+            },
+            {
+              href: '/calendar',
+              title: 'Calendar',
+              body: 'Bible studies, fellowship dinners, and everything coming up.',
+            },
+            {
+              href: '/give',
+              title: 'Give',
+              body: 'Support the ministry of Hope Baptist securely online.',
+            },
+          ].map((card) => (
+            <Link
+              key={card.href}
+              href={card.href}
+              className="group relative overflow-hidden rounded-3xl border border-line bg-white p-8 transition hover:-translate-y-1 hover:border-sky/40 hover:shadow-xl"
+            >
+              <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-navy to-sky opacity-0 transition group-hover:opacity-100" />
+              <h3 className="text-xl font-semibold text-navy">{card.title}</h3>
+              <p className="mt-2 text-muted">{card.body}</p>
+              <span className="mt-6 inline-flex items-center gap-1 font-medium text-sky">
+                Learn more
+                <span className="transition group-hover:translate-x-1">→</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Verse */}
+      <section className="bg-navy text-white">
+        <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
+          <blockquote className="font-serif text-2xl leading-relaxed italic sm:text-3xl">
+            &ldquo;Now the God of hope fill you with all joy and peace in believing, that ye may abound in hope,
+            through the power of the Holy Ghost.&rdquo;
+          </blockquote>
+          <p className="mt-6 text-sm uppercase tracking-[0.3em] text-sky">Romans 15:13</p>
+        </div>
+      </section>
+    </>
+  )
 }
