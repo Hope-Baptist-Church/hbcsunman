@@ -32,7 +32,13 @@ export const site = {
    * Weekly schedule, e.g. { day: 'Sunday', name: 'Morning Worship', time: '11:00 AM' }.
    * Shown on the home, visit and calendar pages; hidden while empty.
    */
-  services: [] as Service[],
+  services: [
+    { day: 'Sunday', name: 'Sunday School', time: '10:00 AM' },
+    { day: 'Sunday', name: 'Morning Service', time: '11:00 AM' },
+    // 6:00 PM part of the year, 7:00 PM the rest — change by hand when it switches.
+    { day: 'Sunday', name: 'Evening Service', time: '7:00 PM' },
+    { day: 'Wednesday', name: 'Wednesday Service', time: '6:00 PM' },
+  ] as Service[],
 
   /**
    * Public Google Calendar the church keeps its events in. Anyone with edit
